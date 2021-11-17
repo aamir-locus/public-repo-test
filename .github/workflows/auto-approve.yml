@@ -9,10 +9,6 @@ jobs:
     if: ${{ github.event.label.name == 'auto-approve' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Dump GitHub context
-        env:
-          PR_LABEL: ${{ toJSON(github.event.label.name) }}
-        run: echo "PR_LABEL=$PR_LABEL" >> $GITHUB_ENV
       - name: Download github-actions
         uses: actions/checkout@v2
         with:
@@ -23,11 +19,9 @@ jobs:
           persist-credentials: false
           path: github-actions
           clean: false
-        if: env.PR_LABEL == '"auto-approve"'
       - name: Get PR approval status
         id: auto-approve
         uses: ./github-actions/auto-approve-pr
-        if: env.PR_LABEL == '"auto-approve"'
       # actions/checkout action removes the workspace everytime we called it. There's a parameter to stop that behaviour `clean: false` but it's not working.
       # Therfore, to avoid the failure I have called `actions/checkout` at the end else it throws an error. `action.yaml not found in post section`.
       # we have to call it explicitly when we use `auto-approve-pr` composite action.
@@ -38,4 +32,3 @@ jobs:
           token: ${{ secrets.TOKEN }}
           persist-credentials: false
           path: github-actions
-        if: env.PR_LABEL == '"auto-approve"'
