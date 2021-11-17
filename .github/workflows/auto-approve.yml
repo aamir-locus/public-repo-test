@@ -22,7 +22,7 @@ jobs:
           persist-credentials: false
           path: github-actions
           clean: false
-        if: env.PR_LABEL == '\"auto-approve\"'
+        if: env.PR_LABEL == '"auto-approve"'
       - name: Get PR approval status
         id: auto-approve
         uses: ./github-actions/auto-approve-pr
