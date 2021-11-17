@@ -1,0 +1,33 @@
+name: Auto approve
+on:
+  pull_request_target:
+    types: [opened]
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download github-actions
+        uses: actions/checkout@v2
+        with:
+          repository: aamir-locus/generic-workflow
+          ref: master
+          token: ${{ secrets.TOKEN }}
+          # clean token after use
+          persist-credentials: false
+          path: github-actions
+          clean: false
+      - name: Get PR approval status
+        id: auto-approve
+        uses: ./github-actions/auto-approve-pr
+      # actions/checkout action removes the workspace everytime we called it. There's a parameter to stop that behaviour `clean: false` but it's not working.
+      # Therfore, to avoid the failure I have called `actions/checkout` at the end else it throws an error. `action.yaml not found in post section`.
+      # we have to call it explicitly when we use `auto-approve-pr` composite action.
+      - uses: actions/checkout@v2
+        with:
+          repository: aamir-locus/generic-workflow
+          ref: master
+          token: ${{ secrets.TOKEN }}
+          persist-credentials: false
+          path: github-actions
