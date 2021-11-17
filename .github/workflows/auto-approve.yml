@@ -8,6 +8,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Dump GitHub context
+        env:
+          PR_LABEL: ${{ toJSON(github.event.label.name) }}
+        run: echo "PR_LABEL=$PR_LABEL" >> $GITHUB_ENV
       - name: Download github-actions
         uses: actions/checkout@v2
         with:
@@ -18,6 +22,7 @@ jobs:
           persist-credentials: false
           path: github-actions
           clean: false
+        if: env.PR_LABEL == 'auto-approve'
       - name: Get PR approval status
         id: auto-approve
         uses: ./github-actions/auto-approve-pr
@@ -31,7 +36,4 @@ jobs:
           token: ${{ secrets.TOKEN }}
           persist-credentials: false
           path: github-actions
-      - name: Dump GitHub context
-        env:
-          PR_LABEL: ${{ toJSON(github.event.label.name) }}
-        run: echo "$PR_LABEL"
+        if: env.PR_LABEL == 'auto-approve'
