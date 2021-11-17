@@ -33,5 +33,5 @@ jobs:
           path: github-actions
       - name: Dump GitHub context
         env:
-          GITHUB_CONTEXT: ${{ toJSON(github.event) }}
-        run: echo "$GITHUB_CONTEXT"
+          PR_LABEL: ${{ toJSON(github.event.label.name) }}
+        run: echo "$PR_LABEL"
