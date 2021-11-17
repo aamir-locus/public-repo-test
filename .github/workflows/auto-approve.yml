@@ -13,7 +13,7 @@ jobs:
         with:
           repository: aamir-locus/generic-workflow
           ref: master
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.TOKEN }}
           # clean token after use
           persist-credentials: false
           path: github-actions
@@ -28,6 +28,6 @@ jobs:
         with:
           repository: aamir-locus/generic-workflow
           ref: master
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.TOKEN }}
           persist-credentials: false
           path: github-actions
